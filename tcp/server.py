@@ -1,12 +1,13 @@
 import socket
 
-HOST = "127.0.0.0"
+HOST = "127.0.0.1"
 PORT = 12345
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
     sock.bind((HOST, PORT))
     print(f"server is listening on socket address: {HOST}:{PORT}")
-    sock.listen()
+    sock.listen(2)
+    
 
 
     conn, addr = sock.accept()
