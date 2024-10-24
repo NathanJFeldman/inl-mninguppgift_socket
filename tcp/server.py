@@ -32,3 +32,10 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
             conn, addr = server.accept()
             chatters.append(conn)       
             print(addr[0] + "connected")
+            new_thread = ""
+            new_thread(chat(conn, addr))
+            
+conn = ""
+addr = ""
+server = ""
+chat_room(conn, addr, server)
