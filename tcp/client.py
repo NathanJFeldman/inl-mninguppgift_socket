@@ -1,24 +1,31 @@
-import socket
-import pyinputplus as pyip #type: ignore
+import socket, select, sys
 
 HOST = "127.0.0.1"
 PORT = 12345
 
 
-with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_sock:
+with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+    sock.bind((HOST, PORT))
 
+    while True:
+        data, addr = sock.recvfrom(1024)
+        chat : str = input("Enter: ")
+        encoded_data = chat.encode("utf-8")
+        sent_message = "{addr}: {encoded_data}"
+        sock.sendto(encoded_data, (HOST, PORT))
+        decoded_message = data.decode("utf-8")
 
 
 
 
     #print("Connected")
-    #client_sock.connect((HOST, PORT))
+    #sock.connect((HOST, PORT))
     #message = "Welcome to the chat"
     #encoded_message = message.encode("utf-8")
-    #client_sock.sendall(encoded_message)
+    #sock.sendall(encoded_message)
     #chat = pyip.inputStr("Type in chat: ")
 #
-    #response = client_sock.recv(512)
+    #response = sock.recv(512)
 
 #decoded_response = response.decode("utf-8")
-#print(f"svaret från servern: {decoded_response}") 
+#print(f"svaret från clientsockn: {decoded_response}") 

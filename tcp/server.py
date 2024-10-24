@@ -3,6 +3,8 @@ import socket, sys, select
 HOST = "127.0.0.1"
 PORT = 12345
 
+global conn, addr
+
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
     sock.bind((HOST, PORT))
     print(f"server is listening on socket address: {HOST}:{PORT}")
@@ -27,15 +29,8 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
                     chatter.send(message)
                 except:
                     chatter.close()
-    def chat_room(conn, addr, server):
-        while True:
-            conn, addr = server.accept()
-            chatters.append(conn)       
-            print(addr[0] + "connected")
-            new_thread = ""
-            new_thread(chat(conn, addr))
+    while True:
+        conn, addr = sock.accept()
+        chatters.append(conn)       
+        print(addr[0] + "connected")
             
-conn = ""
-addr = ""
-server = ""
-chat_room(conn, addr, server)
