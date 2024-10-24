@@ -21,4 +21,4 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_sock:
     #response = client_sock.recv(512)
 
 #decoded_response = response.decode("utf-8")
-print(f"svaret från servern: {decoded_response}") 
+#print(f"svaret från servern: {decoded_response}") 
