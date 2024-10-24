@@ -1,37 +1,33 @@
-import socket, sys, select
+import socket, threading
 
 HOST = "127.0.0.1"
 PORT = 12345
 
-global conn, addr
+chatters : list = []
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
     sock.bind((HOST, PORT))
-    print(f"server is listening on socket address: {HOST}:{PORT}")
     sock.listen(10)
-    chatters : list = []
-    def chat(conn, addr):
-        conn, addr = sock.accept()
-        with conn:
-            print(f"connection establied: {conn}\n")
-            print(f"Welcome to the chatroom!")
-            while True:
-                message = conn.recv(2048)
-                if message:
-                    print(addr[0] + message)
-                    message_all = addr[0] + message
-                    send_all(message_all, conn)
 
-    def send_all(message, connection):
+    def chat_joined():
+        print("{addr} has connected.")
+        chatters.append(sock)
+        while True:
+            try:
+                message = sock.recv(1024).decode("utf-8")
+                if message:
+                    send_all(message, sock)
+            except:
+                break
+
+
+
+    def send_all(message, sender):
         for chatter in chatters:
-            if chatter != connection:
+            if chatter != sender:
                 try:
-                    chatter.send(message)
+                    chatter.send(message.encode("utf-8"))
                 except:
-                    chatter.close()
-    while True:
-        conn, addr = sock.accept()
-        chatters.append(conn)       
-        print(addr[0] + "connected")
-        
-            
+                    sock.close()
+                    chatters.remove(chatter)
+    def 
