@@ -33,4 +33,5 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
         conn, addr = sock.accept()
         chatters.append(conn)       
         print(addr[0] + "connected")
+        
             
