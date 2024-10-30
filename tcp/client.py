@@ -2,16 +2,25 @@ import socket, threading
 
 HOST = "127.0.0.1"
 PORT = 12345
+client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+client.connect(('127.0.0.1', 12345))
 
-def main():
-    server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server.connect((HOST, PORT))
+def receive():
     while True:
-        message = input("Enter message -> ")
-        server.sendall(message.encode("utf-8"))
-        data = server.recv(1024)
-        response = data.decode("utf-8")
-        print(f"Server response: {response}")
+        try:
+            message = client.recv(1024).decode('utf-8')
+            print(message)
+        except:
+            print("An error occured!")
+            client.close()
+            break
+def write():
+    while True:
+        message = f"Enter message -> "
+        client.send(message.encode('utf-8'))
 
-if __name__ == "__main__":
-    main()
+receive_thread = threading.Thread(target=receive)
+receive_thread.start()
+
+write_thread = threading.Thread(target=write)
+write_thread.start()
