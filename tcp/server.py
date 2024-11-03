@@ -6,6 +6,8 @@ PORT = 12345
 clients : list = []
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+    # Enable broadcasting mode
+    s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     def hantera_client(client):
         while True:
             try:
