@@ -1,26 +1,30 @@
-import socket, threading
+import socket, threading, queue
 
 HOST = "127.0.0.1"
 PORT = 12345
-client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-client.connect(('127.0.0.1', 12345))
+
+client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+client.bind((HOST, PORT))
+
+name = input("Skriv vad du heter: ")
 
 def receive():
     while True:
         try:
-            message = client.recv(1024).decode('utf-8')
-            print(message)
+            message, _ = client.recvfrom(1024)
+            print(message.decode())
         except:
-            print("An error occured!")
-            client.close()
-            break
-def write():
-    while True:
-        message = f"Enter message -> "
-        client.send(message.encode('utf-8'))
+            pass
 
-receive_thread = threading.Thread(target=receive)
-receive_thread.start()
+t = threading.Thread(target=receive)
 
-write_thread = threading.Thread(target=write)
-write_thread.start()
+t.start()
+
+client.sendto(f"SIGNUP_TAG:{name}".encode(), (HOST, PORT))
+
+while True:
+    message = input("")
+    if message == "exit":
+        exit()
+    else:
+        client.sendto(f"{name}: {message}".encode(), (HOST, PORT))
