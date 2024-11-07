@@ -10,7 +10,7 @@ messages = queue.Queue()  #type: ignore
 clients = []
 
 server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) # Set the socket option to allow reuse of local addresses
+server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 3) # Set the socket option to allow reuse of local addresses
 server.bind((HOST, PORT)) # Bind the socket to the local address and port
 
 def receive():
@@ -48,3 +48,10 @@ t2 = threading.Thread(target=broadcast)
 
 t1.start()
 t2.start()
+
+try:
+    while True:
+        pass  # Keep the main thread alive
+except KeyboardInterrupt:
+    print("Server shutting down...")
+    server.close()
