@@ -21,7 +21,7 @@ def recieve():
 
 def broadcast():
     while True:
-        while not messsage.empty():
+        while not message.empty():
             message, addr = messages.get()
             print(message.decode("utf-8"))
             if addr not in clients:
@@ -36,7 +36,7 @@ def broadcast():
                 except:
                     client.remove(client)
 
-t1 = threading.Thread(traget=receive)
+t1 = threading.Thread(target=recieve)
 t2 = threading.Thread(target=broadcast)
 
 t1.start()
