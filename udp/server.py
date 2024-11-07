@@ -10,8 +10,8 @@ messages = queue.Queue()  #type: ignore
 clients = []
 
 server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-server.bind((HOST, PORT))
+server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) # Set the socket option to allow reuse of local addresses
+server.bind((HOST, PORT)) # Bind the socket to the local address and port
 
 def receive():
     while True:
@@ -28,18 +28,18 @@ def broadcast():
             print(f"Received message: {message.decode('utf-8')} from {addr}")
 
             if addr not in clients:
-                clients.append(addr)
+                clients.append(addr) # adds client to the clients list
 
             for client in clients:
                 try:
-                    if message.decode("utf-8").startswith("SIGNUP_TAG:"):
-                        name = message.decode()[message.decode().index(":") + 1:]
-                        server.sendto(f"{name} har gått in!".encode(), client)
+                    if message.decode("utf-8").startswith("valt_namn:"): # client chooses a name
+                        name = message.decode()[message.decode().index(":") + 1:] # name gets index with the format "name":"message"
+                        server.sendto(f"{name} har gått in!".encode(), client) # server sends this message to the clients
                     else:
                         server.sendto(message, client)  # Broadcast message to all clients
-                except Exception as e:
-                    print(f"Error sending message to {client}: {e}")
-                    if client in clients:
+                except Exception as error: # checks for errors
+                    print(f"Error sending message to {client}: {error}")
+                    if client in clients: # if there is an error the server removes the client from the server
                         clients.remove(client)
 
 # Start the receive and broadcast threads
