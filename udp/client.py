@@ -34,7 +34,7 @@ client.sendto(f"valt_namn:{name}".encode(), (HOST, PORT))
 # Main loop to send messages to the server
 while True:
     # Prompt the user to input a message
-    message = input("Enter a message: ")
+    message = input("Skriv i chatten: ")
     
     # If the user types "exit", exit the program
     if message == "exit":

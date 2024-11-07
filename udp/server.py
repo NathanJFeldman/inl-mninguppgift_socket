@@ -19,13 +19,13 @@ def receive():
             message, addr = server.recvfrom(1024)  # Receive message from a client
             messages.put((message, addr))  # Add message to queue
         except Exception as e:
-            print(f"Error receiving message: {e}")
+            print(f"Problem med att få meddelandet: {e}")
 
 def broadcast():
     while True:
         if not messages.empty():  # Only process if there are messages in the queue
             message, addr = messages.get()  # Get message from queue
-            print(f"Received message: {message.decode('utf-8')} from {addr}")
+            print(f"Meddelandet har skickats in: {message.decode('utf-8')} from {addr}")
 
             if addr not in clients:
                 clients.append(addr) # adds client to the clients list
