@@ -1,13 +1,10 @@
-import socket, threading, queue
+import socket, threading
 
 HOST = "127.0.0.1"
 PORT = 44444
 
 # Create a UDP socket for the client
 client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-
-# Bind the socket to the local address and port
-client.bind((HOST, PORT))
 
 # Prompt the user to enter their name
 name = input("Skriv vad du heter: ")
@@ -34,7 +31,7 @@ client.sendto(f"valt_namn:{name}".encode(), (HOST, PORT))
 # Main loop to send messages to the server
 while True:
     # Prompt the user to input a message
-    message = input("Skriv i chatten: ")
+    message = input("Skicka: ")
     
     # If the user types "exit", exit the program
     if message == "exit":
